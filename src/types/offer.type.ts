@@ -13,6 +13,10 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
   housingType: string;
+  roomCount: number;
+  guestCount: number;
+  price: number;
+  facilities: string[],
   authorId: number;
   commentCount: number;
   coordinates: OfferCoordinates

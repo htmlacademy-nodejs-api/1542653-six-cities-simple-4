@@ -26,7 +26,13 @@ export default class CliCommandManager {
     }, {});
   };
 
-  public processedCommand = (): void => {
-    
+  public getCommand = (commandName: string): CliCommandInterface => this.commands[commandName] ?? this.commands[this.defaultCommand];
+
+  public processedCommand = (argv: string[]): void => {
+    const parsedCommand = this.parseCommand(argv);
+    const [ commandName ] = Object.keys(parsedCommand);
+    const command = this.getCommand(commandName);
+    const commandArguments = parsedCommand[commandName] ?? [];
+    command.execute(...commandArguments);
   };
 }
