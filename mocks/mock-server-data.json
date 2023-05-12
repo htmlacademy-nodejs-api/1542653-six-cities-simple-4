@@ -21,7 +21,7 @@
       "Hotel Le Friedland is located 1640 feet from the Champs-Elysées and the Arc de Triomphe. Rooms at Champs Elysées Friedland are furnished in printed fabrics and are contemporary in style.",
       "Just a 2-minute walk from Grands Boulevards and Le Peletier Metro Stations, this 3-star hotel offers free WiFi access and a lounge bar."
     ],
-    "city": [
+    "cities": [
       "Paris",
       "Cologne",
       "Brussels",
@@ -38,7 +38,7 @@
       "https://loremflickr.com/640/480/city",
       "https://loremflickr.com/640/480/city"
     ],
-    "type": [
+    "types": [
       "apartment",
       "house",
       "room",
