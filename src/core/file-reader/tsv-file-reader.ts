@@ -1,68 +1,38 @@
-import { readFileSync } from 'node:fs';
+import EventEmitter from 'node:events';
+import { createReadStream } from 'node:fs';
 import { FileReaderInterface } from './file-reader.interface';
-import { Offer } from '../../types/offer.type';
 
-export default class TSVFileReader implements FileReaderInterface {
-  private fileRowData = '';
+const KB16 = 16384;
 
-  constructor(public filename: string) {}
+export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
 
+  constructor(public filename: string) {
+    super();
+  }
 
-  public read = () => {
-    this.fileRowData = readFileSync(this.filename, {encoding: 'utf-8'});
-  };
+  public read = async () => {
+    const stream = createReadStream(this.filename, {
+      highWaterMark: KB16,
+      encoding: 'utf-8'
+    });
 
-  public convertFileContentToArray = (): Offer[] => {
-    if (!this.fileRowData) {
-      return [];
+    let remainingData = '';
+    let nextLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of stream) {
+      remainingData += chunk.toString();
+
+      while ((nextLinePosition = remainingData.indexOf('\n')) >= 0) {
+        const completeRow = remainingData.slice(0, nextLinePosition + 1);
+        remainingData = remainingData.slice(++nextLinePosition);
+        importedRowCount++;
+
+        this.emit('line', completeRow);
+      }
     }
 
-    return this.fileRowData
-      .split('\n')
-      .filter((item) => item.trim() !== '')
-      .map((line) => line.split('\t'))
-      .map((
-        [
-          name,
-          description,
-          publishDate,
-          city,
-          prevImageUrl,
-          photos,
-          isPremium,
-          rating,
-          housingType,
-          roomCount,
-          guestCount,
-          price,
-          facilities,
-          authorId,
-          commentCount,
-          coordinates,
-        ]
-      ) => {
-        const [longtitude, latitude] = coordinates.split(';');
-        return {
-          name,
-          description,
-          publishDate,
-          city,
-          prevImageUrl,
-          photos: photos.split(';'),
-          isPremium: !!isPremium,
-          rating: Number(rating),
-          housingType,
-          roomCount: Number(roomCount),
-          guestCount: Number(guestCount),
-          price: Number(price),
-          facilities: facilities.split(';'),
-          authorId: Number(authorId),
-          commentCount: Number(commentCount),
-          coordinates: {
-            longtitude,
-            latitude
-          }
-        };
-      });
+    this.emit('end', importedRowCount);
   };
+
 }

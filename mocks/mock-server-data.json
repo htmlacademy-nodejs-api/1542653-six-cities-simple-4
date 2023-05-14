@@ -1,0 +1,83 @@
+{
+  "api": {
+    "names": [
+      "Marina Dome Resort & Spa",
+      "Scarlet Horizon Hotel",
+      "Olive Willow Resort",
+      "Illustrious Woodland Hotel",
+      "Summer Flower Hotel",
+      "Nounthich",
+      "Steerkamb",
+      "Aiwsto",
+      "Downsend",
+      "Three titans"
+    ],
+    "descriptions": [
+      "All soundproofed guest rooms include a 43-inch flat-screen TV (43 in) with cable channels and free Wi-Fi access. Each room has a simple décor and a hairdryer in the private bathroom.",
+      "The 4-star hotel Pullman Paris Tour Eiffel is set at the foot of the Eiffel Tower and the Trocadero. I had the Eiffel Tower view room with balcony. The views were amazing",
+      "Best Stay Jeuneurs is located in the center of Paris, close to Louvre Museum, Opéra Garnier and Pigalle Metro Station. Free WiFi is offered and private parking is available on site.",
+      "Located in the Gobelins district, recent renovated in 2022 design hotel features a duplex terrace and private shaded rooftop terrace for their guests enjoyment.",
+      "Located in front of the Montparnasse Tower and Galeries Lafayette Shopping Center, the Waldorf hotel offers air-conditioned rooms with free Wi-Fi.",
+      "Hotel Le Friedland is located 1640 feet from the Champs-Elysées and the Arc de Triomphe. Rooms at Champs Elysées Friedland are furnished in printed fabrics and are contemporary in style.",
+      "Just a 2-minute walk from Grands Boulevards and Le Peletier Metro Stations, this 3-star hotel offers free WiFi access and a lounge bar."
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "photos": [
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city",
+      "https://loremflickr.com/640/480/city"
+    ],
+    "types": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "facilities": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "coordinates": {
+      "Paris": {
+        "latitude": ["48.571839", "48.959904", "48.701748", "48.722744", "48.727733"],
+        "longitude": ["2.220226","2.315973","2.236261","2.255223","2.328919"]
+      },
+      "Cologne": {
+        "latitude": ["50.930975", "50.738260", "50.738601", "50.708986", "50.581486"],
+        "longitude": ["6.796750","6.859771","6.758071","6.679511","6.681135"]
+      },
+      "Brussels": {
+        "latitude": ["50.539240","50.747431","50.748863","50.766960","50.639257"],
+        "longitude": ["4.315228","4.230974","4.249630","4.231154","4.295587"]
+      },
+      "Amsterdam": {
+        "latitude": ["52.266779","52.337422","52.374754","52.256506","52.292793"],
+        "longitude": ["4.573042","4.631823","4.700599","4.826891","4.562584"]
+      },
+      "Hamburg": {
+        "latitude": ["53.404167","53.376627","53.466958","53.338697","53.466146"],
+        "longitude": ["10.000717","10.005790","10.009718","10.003444","10.004167"]
+      },
+      "Dusseldorf": {
+        "latitude": ["51.213243","51.191312","51.139393","51.218530","51.142191"],
+        "longitude": ["6.586402","6.602311","6.696012","6.773395","6.468384"]
+      }
+    }
+  }
+}
