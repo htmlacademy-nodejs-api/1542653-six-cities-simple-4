@@ -6,11 +6,11 @@
       "Olive Willow Resort",
       "Illustrious Woodland Hotel",
       "Summer Flower Hotel",
-      "Nounthich",
-      "Steerkamb",
-      "Aiwsto",
-      "Downsend",
-      "Three titans"
+      "Sapphire Cave Motel",
+      "Serene Tide Hotel",
+      "Autumn Mantle Hotel & Spa",
+      "Obsidian Residence Resort",
+      "Modest Landscape Resort"
     ],
     "descriptions": [
       "All soundproofed guest rooms include a 43-inch flat-screen TV (43 in) with cable channels and free Wi-Fi access. Each room has a simple décor and a hairdryer in the private bathroom.",
@@ -78,6 +78,51 @@
         "latitude": ["51.213243","51.191312","51.139393","51.218530","51.142191"],
         "longitude": ["6.586402","6.602311","6.696012","6.773395","6.468384"]
       }
-    }
+    },
+    "people": [
+      "Матвей",
+      "Тимофей",
+      "Алина",
+      "Дарья",
+      "Алия",
+      "Иван",
+      "Тимофей",
+      "Давид",
+      "Аиша",
+      "Андрей",
+      "Василиса",
+      "Артём"
+    ],
+    "emails": [
+      "keijoissadedda-7159@yopmail.com",
+      "treuwossufotro-9202@yopmail.com",
+      "wufoinnosafrou-4722@yopmail.com",
+      "trinnekeiseuzo-2768@yopmail.com",
+      "wibreimmappatreu-8243@yopmail.com",
+      "gapunoddatrau-7723@yopmail.com",
+      "zugasugruhei-2832@yopmail.com",
+      "foussemerique-5669@yopmail.com",
+      "wekaluddaffi-6578@yopmail.com",
+      "giwemmaffiquau-5055@yopmail.com",
+      "zeillojelleive-8582@yopmail.com",
+      "gresseuleimouye-4359@yopmail.com",
+      "trougrosoipipou-3867@yopmail.com"
+    ],
+    "avatars": [
+      "https://avatarko.ru/img/kartinka/21/paren_i_devushka_prividenie_20833.jpg",
+      "https://avatarko.ru/img/kartinka/31/fantastika_drakon_deti_30807.jpg",
+      "https://avatarko.ru/img/kartinka/11/zhivotnye_panda_10750.jpg",
+      "https://avatarko.ru/img/kartinka/15/zhivotnye_bars_14302.jpg",
+      "https://avatarko.ru/img/kartinka/19/chelovechek_18970.jpg",
+      "https://avatarko.ru/img/kartinka/27/igra_Lara_Croft_26762.jpg",
+      "https://avatarko.ru/img/kartinka/1/snegovik_sharf.jpg",
+      "https://avatarko.ru/img/kartinka/24/zhivotnye_kot_23087.jpg",
+      "https://avatarko.ru/img/kartinka/25/devochka_robot_zont_dozhd_24962.jpg",
+      "https://avatarko.ru/img/kartinka/5/zhivotnye_kot_4912.jpg",
+      "https://avatarko.ru/img/kartinka/25/devushka_24945.jpg",
+      "https://avatarko.ru/img/kartinka/11/zhivotnye_ptica_pingvin_10460.jpg",
+      "https://avatarko.ru/img/kartinka/16/devushka_15972.jpg",
+      "https://avatarko.ru/img/kartinka/21/zhivotnye_kot_20082.jpg"
+    ]
   }
 }

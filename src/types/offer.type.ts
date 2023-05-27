@@ -1,4 +1,6 @@
-type OfferCoordinates = {
+import { User } from './user.type';
+
+export type OfferCoordinates = {
   longtitude: string;
   latitude: string;
 };
@@ -9,15 +11,15 @@ export type Offer = {
   publishDate: string;
   city: string;
   prevImageUrl: string;
-  photos: string[],
+  photos: string[];
   isPremium: boolean;
   rating: number;
   housingType: string;
   roomCount: number;
   guestCount: number;
   price: number;
-  facilities: string[],
-  authorId: number;
+  facilities: string[];
+  author: User;
   commentCount: number;
-  coordinates: OfferCoordinates
+  coordinates: OfferCoordinates;
 };

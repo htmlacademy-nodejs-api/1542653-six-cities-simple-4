@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import CliCommandManager from './app/cli.js';
 
 const commandManager = new CliCommandManager();

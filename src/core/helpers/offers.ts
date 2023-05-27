@@ -15,7 +15,10 @@ export const convertFileLineToOffer = (offerRowLine: string): Offer => {
     guestCount,
     price,
     facilities,
-    authorId,
+    authorName,
+    authorEmail,
+    authorAvatarUrl,
+    authorStatus,
     commentCount,
     coordinates,
   ] = offerRowLine.replace('\n', '').split('\t');
@@ -36,7 +39,12 @@ export const convertFileLineToOffer = (offerRowLine: string): Offer => {
     guestCount: Number(guestCount),
     price: Number(price),
     facilities: facilities.split(';'),
-    authorId: Number(authorId),
+    author: {
+      name: authorName,
+      email: authorEmail,
+      avatarUrl: authorAvatarUrl,
+      isPro: Boolean(authorStatus)
+    },
     commentCount: Number(commentCount),
     coordinates: {
       longtitude,
