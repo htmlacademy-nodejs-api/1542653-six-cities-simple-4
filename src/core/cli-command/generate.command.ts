@@ -16,13 +16,13 @@ export default class GenerateCommand implements CliCommandInterface {
     try {
       this.initialData = await got.get(url).json();
     } catch {
-      console.log(chalk.red(`Не удалось получить данные для генерации по адресу: ${url}.`));
+      console.log(chalk.red(`Failed to get data to generate at: ${url}.`));
     }
 
     if (!offerCount || offerCount < 0) {
       console.error(chalk.red(`
-        Указанное количество генерируемых данных ${count} указано не верно.
-        Параметр count должен быть числовым и больше 0`
+        Specified amount of generated data ${count} is incorrect.
+        The count parameter must be number and greater than 0`
       ));
       return;
     }
@@ -33,6 +33,6 @@ export default class GenerateCommand implements CliCommandInterface {
       await appendFile(filepath, `${offerGenerator.generate()}\n`, 'utf8');
     }
 
-    console.log(`Файл ${filepath} Был создан! Было добавлено ${offerCount} строк`);
+    console.log(`File ${filepath} has been created! Generated ${offerCount} rows`);
   };
 }

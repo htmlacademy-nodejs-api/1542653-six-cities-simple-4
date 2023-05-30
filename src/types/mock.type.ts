@@ -10,5 +10,8 @@ export type MockOffer = {
   photos: string[],
   types: string[],
   facilities: string[],
+  people: string[],
+  emails: string[],
+  avatars: string[]
   coordinates: Record<string, MockCityCoordinates>
 }
