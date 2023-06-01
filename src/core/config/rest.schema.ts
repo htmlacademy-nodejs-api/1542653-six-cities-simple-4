@@ -7,6 +7,10 @@ export type RestSchema = {
   PORT: number;
   DB_HOST: string;
   SALT: string;
+  DB_USER: string;
+  DB_PASSWORD: string;
+  DB_PORT: string;
+  DB_NAME: string;
 }
 
 export const configRestSchema = convict<RestSchema>({
@@ -27,5 +31,29 @@ export const configRestSchema = convict<RestSchema>({
     format: String,
     env: 'SALT',
     default: null,
+  },
+  DB_USER: {
+    doc: 'User name for connection to database',
+    format: String,
+    env: 'DB_USER',
+    default: null
+  },
+  DB_PASSWORD: {
+    doc: 'Password for connection to database',
+    format: String,
+    env: 'DB_PASSWORD',
+    default: null
+  },
+  DB_NAME: {
+    doc: 'Database name',
+    format: String,
+    env: 'DB_NAME',
+    default: null
+  },
+  DB_PORT: {
+    doc: 'Port for database connection',
+    format: 'port',
+    env: 'DB_PORT',
+    default: '27017'
   }
 });

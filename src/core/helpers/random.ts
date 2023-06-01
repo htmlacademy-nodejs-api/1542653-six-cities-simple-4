@@ -21,9 +21,14 @@ export const getRandomDate = (): string => {
 
 export const getRandomItems = <T>(items: T[]): T[] => {
   const lastIndexList = items.length - 1;
-  const startPosition = getRandomInt(0, lastIndexList);
+  const startPosition = getRandomInt(1, lastIndexList);
   const endPosition = startPosition + getRandomInt(startPosition, items.length);
   return items.slice(startPosition, endPosition);
 };
+
+export const getExactCountItems = <T>(items: T[], exactCount: number): T[] => Array.from(
+  {length: exactCount},
+  () => getRandomItem<T>(items)
+);
 
 export const getRandomFlag = (): boolean => Math.random() > 0.5;
