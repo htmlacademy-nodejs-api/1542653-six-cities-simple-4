@@ -27,11 +27,7 @@ export default class UserService implements UserServiceInterface {
   public findOrCreate = async (dto: CreateUserDTO, salt: string): Promise<DocumentType<UserEntity>> => {
     const existedUser = await this.findByEmail(dto.email);
 
-    if (existedUser) {
-      return existedUser;
-    }
-
-    return await this.create(dto, salt);
+    return existedUser ?? await this.create(dto, salt);
 
   };
 
