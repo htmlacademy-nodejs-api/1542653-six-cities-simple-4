@@ -1,0 +1,163 @@
+openapi: 3.0.2
+info:
+  title: API сервер для учебного проекта «Шесть городов (простой)».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: users
+    description: Действия с пользователями
+  - name: offers
+    description: Действия с предложениями
+  - name: comments
+    description: Действия с комментариями
+
+paths:
+  /offers:
+    post:
+      tags:
+      - offers
+      summary: Создание нового предложения
+      description: Добавляет новое предложение по аренде
+      requestBody:
+        description: Информация для добавления новго предложения по аренде
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        "200":
+          description: "Новое предложение создано. Объект нового предложения."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createOffer'
+
+
+components:
+  schemas:
+    createOffer:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: 'Modest Landscape Resort'
+          minLength: 10
+          maxLength: 100
+          required:
+            - "true"
+
+        description:
+          type: string
+          example: 'All soundproofed guest rooms include a 43-inch flat-screen TV (43 in) with cable channels and free Wi-Fi access. Each room has a simple décor and a hairdryer in the private bathroom.'
+          minLength: 20
+          maxLength: 1024
+          required:
+            - "true"
+
+        publishDate:
+          type: string
+          example: '2023-05-21T09:52:29.036Z'
+          required:
+            - "true"
+
+        city:
+          type: string
+          example: 'Paris'
+          required:
+            - "true"
+
+        prevImageUrl:
+          type: string
+          example: 'https://loremflickr.com/640/480/city'
+          required:
+            - "true"
+
+        photos:
+          type: array
+          example: [
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city'
+          ]
+          minItems: 6
+          maxItems: 6
+
+        isPremium:
+          type: boolean
+          example: true
+          required:
+            - "true"
+
+        rating:
+          type: number
+          example: 4
+          minimum: 1
+          maximum: 5
+          required:
+            - "true"
+
+        housingType:
+          type: string
+          example: 'apartment'
+          required:
+            - "true"
+
+        roomCount:
+          type: number
+          example: 5
+          minimum: 1
+          maximum: 8
+          required:
+            - "true"
+
+        guestCount:
+          type: number
+          example: 4
+          minimum: 1
+          maximum: 10
+          required:
+            - "true"
+
+        price:
+          type: number
+          example: 3980
+          minimum: 100
+          maximum: 100000
+          required:
+            - "true"
+
+        facilities:
+          type: array
+          example: [
+            Towels,
+            Fridge
+          ]
+          required:
+            - "true"
+
+        user:
+          type: object
+
+        coordinates:
+          type: object
+          example: {
+            longtitude: '48.701748',
+            latitude: '2.236261'
+          }
+          required:
+            - "true"
+
+
+
+
+
