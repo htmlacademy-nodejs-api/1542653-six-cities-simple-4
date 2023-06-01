@@ -12,7 +12,8 @@ export const validateRating = (rating: number): boolean => {
   const isFractional = rating.toString().includes('.');
   if (isFractional) {
     const chars = rating.toString().split('.').pop();
-    return !!(chars && chars.length <= 1);
+    const charsCount = chars ? chars.length : 0;
+    return charsCount <= 1;
 
   }
 
@@ -21,4 +22,9 @@ export const validateRating = (rating: number): boolean => {
 
 export const validateHousingType = (type: string): boolean => HOUSING_TYPES.includes(type);
 
-export const validateFacilities = (customFacilities: string[]): boolean => customFacilities.length !== 0 && customFacilities.every((item) => FACILITIES.includes(item));
+export const validateFacilities = (customFacilities: string[]): boolean => {
+  if (customFacilities.length && customFacilities.every((item) => FACILITIES.includes(item))) {
+    return true;
+  }
+  return false;
+};
