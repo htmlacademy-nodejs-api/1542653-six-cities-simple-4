@@ -18,5 +18,5 @@ export enum OfferSchemaLimits {
     MAX_GUEST_COUNT = 10,
     MIN_OFFER_PRICE = 100,
     MAX_OFFER_PRICE= 100000,
-
+    DEFAULT_OFFER_REQUEST_LIMIT = 60
 }

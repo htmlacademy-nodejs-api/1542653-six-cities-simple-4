@@ -6,6 +6,7 @@ export type OfferCoordinates = {
 };
 
 export type Offer = {
+  id?: string;
   name: string;
   description: string;
   publishDate: string;
