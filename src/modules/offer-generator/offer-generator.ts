@@ -21,7 +21,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const guestCount = getRandomInt(1, OfferLimits.MAX_GUEST_COUNT);
     const price = getRandomInt(OfferLimits.MIN_RANDOM_PRICE, OfferLimits.MAX_RANDOM_PRICE);
     const facilities = getRandomItems<string>(this.mockOffers.facilities).join(';');
-    const commentCount = getRandomInt(0, OfferLimits.MAX_COMMENT_COUNT);
+    const commentCount = 0;
     const userName = getRandomItem<string>(this.mockOffers.people);
     const userEmail = getRandomItem<string>(this.mockOffers.emails);
     const userAvatar = getRandomItem<string>(this.mockOffers.avatars);

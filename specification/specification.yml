@@ -17,30 +17,174 @@ tags:
 
 paths:
   /offers:
-    post:
+    get:
       tags:
       - offers
-      summary: Создание нового предложения
-      description: Добавляет новое предложение по аренде
-      requestBody:
-        description: Информация для добавления новго предложения по аренде
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/createOffer'
-        required: true
+      summary: Получить список предложений
+      description: Возвращает массив предложений. Каждое предложение описано в виде объекта.
 
       responses:
         "200":
-          description: "Новое предложение создано. Объект нового предложения."
+          description: "Массив предложений до 60 шт."
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/createOffer'
+                $ref: '#/components/schemas/offers'
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получить данные конкретного предложения
+      description: Возвращает данные конкретного предложения по его id
+
+      responses:
+        "200":
+          description: Возвращает объект запрашиваемого предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerById'
+        "404":
+          description: Запрашиваемое предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+
 
 
 components:
   schemas:
+    offers:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: '647b1d14c28f56fecbc86605'
+          name:
+            type: string
+            example: 'Scarlet Horizon Hotel'
+          description:
+            type: string
+            example: 'Located in front of the Montparnasse Tower and Galeries Lafayette Shopping Center, the Waldorf hotel offers air-conditioned rooms with free Wi-Fi.'
+          publishDate:
+            type: string
+            example: '2023-06-02T10:59:12.838Z'
+          city:
+            type: string
+            example: 'Cologne'
+          prevImageUrl:
+            type: string
+            example: 'https://loremflickr.com/640/480/city'
+          photos:
+            type: array
+            example: [
+              'https://loremflickr.com/640/480/city',
+              'https://loremflickr.com/640/480/city',
+              'https://loremflickr.com/640/480/city',
+              'https://loremflickr.com/640/480/city',
+              'https://loremflickr.com/640/480/city',
+              'https://loremflickr.com/640/480/city'
+            ]
+            minItems: 6
+            maxItems: 6
+          isPremium:
+            type: boolean
+            example: true
+          rating:
+            type: number
+            example: 3.2
+          housingType:
+            type: string
+            example: 'house'
+          roomCount:
+            type: number
+            example: 6
+          guestCount:
+            type: number
+            example: 9
+          price:
+            type: number
+            example: 28383
+          facilities:
+            type: array
+            example: [ 'Towels', 'Fridge' ]
+          authorId:
+            type: string
+            example: '647b1d14c28f56fecbc86603'
+          commentCount:
+            type: number
+            example: 17
+          coordinates:
+            type: object
+            example: { longtitude: '50.708986', latitude: '6.758071' }
+
+    offerById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '647b1d14c28f56fecbc86605'
+        name:
+          type: string
+          example: 'Summer Flower Hotel'
+        description:
+          type: string
+          example: 'Located in front of the Montparnasse Tower and Galeries Lafayette Shopping Center, the Waldorf hotel offers air-conditioned rooms with free Wi-Fi.'
+        publishDate:
+          type: string
+          example: '2023-06-04T12:20:12.838Z'
+        city:
+          type: string
+          example: 'Cologne'
+        prevImageUrl:
+          type: string
+          example: 'https://loremflickr.com/640/480/city'
+        photos:
+          type: array
+          example: [
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city',
+            'https://loremflickr.com/640/480/city'
+          ]
+        isPremium:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 3.2
+        housingType:
+          type: string
+          example: 'house'
+        roomCount:
+          type: number
+          example: 6
+        guestCount:
+          type: number
+          example: 9
+        price:
+          type: number
+          example: 13403
+        facilities:
+          type: array
+          example: [ 'Towels', 'Fridge' ]
+        coordinates:
+          type: object
+          example: { longtitude: '50.708986', latitude: '6.758071' }
+        author:
+          type: object
+          example:  {
+            name: 'Алина',
+            email: 'trougrosoipipou-3867@yopmail.com',
+            avatarUrl: 'https://avatarko.ru/img/kartinka/16/devushka_15972.jpg',
+            isPro: false
+          }
+
     createOffer:
       type: object
 
@@ -156,6 +300,16 @@ components:
           }
           required:
             - "true"
+
+    NotFoundError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Not Found'
+        message:
+          type: string
+          example: 'Запрашиваемое предложение не найдено, проверьте id предложения и попробуйте еще раз'
 
 
 

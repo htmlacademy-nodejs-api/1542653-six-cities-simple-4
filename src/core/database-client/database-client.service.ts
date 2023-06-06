@@ -33,7 +33,6 @@ export default class DataBaseClientService implements DataBaseClientInterface {
       try {
         return await mongoose.connect(uri);
       } catch (error: unknown) {
-        attempt++;
         this.logger.error(`Failed to connect to the database. Attempt: ${attempt}`);
         await setTimeout(DatabaseClientLimits.MAX_CONNECTION_TIMEOUT);
       }

@@ -29,8 +29,8 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     })
     public email!: string;
 
-    @prop()
-    public avatarUrl!: string;
+    @prop({default: ''})
+    public avatarUrl?: string;
 
     @prop({
       required: true,
