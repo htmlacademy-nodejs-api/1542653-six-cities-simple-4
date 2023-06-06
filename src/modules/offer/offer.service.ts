@@ -2,9 +2,14 @@ import { injectable, inject } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import CreateOfferDto from './dto/create-offer.dto';
+import UpdateOfferDto from './dto/update-offer.dto.js';
 import { OfferServiceInterface } from './offer-service.interface';
 import { AppComponent } from '../../types/app-components.enum.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
+import { OfferSchemaLimits } from './offer.constants.js';
+import { SortType } from '../../types/sort-type.enum.js';
+import { Offer } from '../../types/offer.type.js';
+import ReceivedSpecificOfferDto from './dto/received-specific-offer.dto.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -21,9 +26,99 @@ export default class OfferService implements OfferServiceInterface {
     return createdOffer;
   };
 
+  public updateOffer = async (
+    offerId: string,
+    dto: UpdateOfferDto
+  ): Promise<DocumentType<OfferEntity> | null> => {
+    const updatedOffer = await this.offerModel.findByIdAndUpdate(offerId, dto, {new: true}).populate('authorId').exec();
+    this.logger.info(`Offer with id: ${offerId} has been updated`);
+    return updatedOffer;
+  };
+
+  public deleteOffer = async (offerId: string): Promise<DocumentType<OfferEntity> | null> => {
+    const deletedOffer = await this.offerModel.findByIdAndDelete(offerId);
+    this.logger.info(`Offer Offer with id: ${offerId} has been deleted`);
+    return deletedOffer;
+  };
+
+  public find = async (count = OfferSchemaLimits.DEFAULT_OFFER_REQUEST_LIMIT): Promise<DocumentType<OfferEntity>[]> => {
+    const offers = await this.offerModel.aggregate([
+      {
+        $lookup: {
+          from: 'comments',
+          let: {offerId: '$_id'},
+          pipeline: [
+            {$match: {$expr: { $eq: ['$$offerId', '$offerId'] } } },
+          ],
+          as: 'comments'
+        }
+      },
+      { $addFields:
+        { id: { $toString: '$_id'},
+          authorId: { $toString: '$authorId'},
+          commentCount: { $size: '$comments'},
+          rating: {$round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+        },
+      },
+      {$limit: count},
+      {$sort: {'createdAt': SortType.Down}},
+      {$unset: ['_id', '__v', 'comments', 'createdAt', 'updatedAt']}
+    ]);
+
+    return offers;
+  };
+
+
   public findByOfferId = async (
     offerId: string
-  ): Promise<DocumentType<OfferEntity> | null> => await this.offerModel.findById(offerId).exec();
+  ): Promise<Offer | null> => {
+    const offers = await this.offerModel.aggregate<DocumentType<ReceivedSpecificOfferDto>>([
+      { $match: { $expr : { $eq: [ '$_id' , { $toObjectId: offerId } ] } } },
+      {
+        $lookup: {
+          from: 'comments',
+          let: {offerId: '$_id'},
+          pipeline: [
+            {$match: {$expr: { $eq: ['$$offerId', '$offerId'] } } },
+          ],
+          as: 'comments'
+        }
+      },
+      {
+        $lookup: {
+          from: 'user',
+          let: {userId: '$authorId'},
+          pipeline: [
+            {$match: {$expr: {$eq: ['$$userId', '$_id']}}}
+          ],
+          as: 'author',
+        },
+      },
+      { $addFields:
+        { id: { $toString: '$_id'},
+          commentCount: { $size: '$comments'},
+          rating: {$round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+        },
+      },
+      {$unset: [
+        '_id',
+        '__v',
+        'comments',
+        'authorId',
+        'author._id',
+        'author._password',
+        'author.createdAt',
+        'author.updatedAt',
+        'author.__v',
+        'createdAt',
+        'updatedAt'
+      ]}
+    ]).exec();
 
+    const [targetOffer] = offers;
+    return targetOffer ? {
+      ...targetOffer,
+      author: {...targetOffer.author[0]}
+    } : null;
+  };
 }
-
