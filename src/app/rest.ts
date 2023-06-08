@@ -6,6 +6,7 @@ import { RestSchema } from '../core/config/rest.schema';
 import { inject, injectable } from 'inversify';
 import { AppComponent } from '../types/app-components.enum.js';
 import { getDataBaseUri } from '../core/helpers/index.js';
+import OfferController from '../modules/offer/offer.controller.js';
 
 
 @injectable()
@@ -15,6 +16,7 @@ export default class RestApplication {
     @inject(AppComponent.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(AppComponent.ConfigInterface) private readonly config: ConfigInterface<RestSchema>,
     @inject(AppComponent.DataBaseClientInterface) private readonly databaseClient: DataBaseClientInterface,
+    @inject(AppComponent.OfferController) private readonly offerController: OfferController,
   ) {
     this.expressApp = express();
   }
@@ -32,18 +34,31 @@ export default class RestApplication {
     return await this.databaseClient.connect(mongoUriConnection);
   };
 
-  private _initServer = async () => {
+  private _initServer = async (): Promise<void> => {
     this.logger.info('Server initialization...');
     const port = this.config.get('PORT');
-    this.expressApp.listen(() => this.logger.info(`Server has been start on PORT: ${port}`, port));
+    this.expressApp.listen(port, () => this.logger.info(`Server has been start on PORT: ${port}`));
   };
 
-  public init = async () => {
-    this.logger.info('Application initialization…');
+  private _initRoutes = async (): Promise<void> => {
+    this.logger.info('Routes initialization...');
+    this.expressApp.use('/offers', this.offerController.router);
+  };
+
+  private _initMiddleWare = async (): Promise<void> => {
+    this.logger.info('Global middleware initialization...');
+    this.expressApp.use(express.json());
+    this.expressApp.use(express.urlencoded({ extended: true }));
+  };
+
+  public init = async (): Promise<void> => {
+    this.logger.info('Application initialization...');
     this.logger.info(`Got value from .env file, application port: ${this.config.get('PORT')}`);
     this.logger.info('start init databse');
     await this._initDataBase();
     this.logger.info('Connection to database completed');
+    await this._initRoutes();
+    await this._initMiddleWare();
     await this._initServer();
   };
 
