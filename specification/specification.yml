@@ -8,7 +8,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 2.0.0
 tags:
-  - name: users
+  - name: user
     description: Действия с пользователями
   - name: offers
     description: Действия с предложениями
@@ -30,10 +30,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/offers'
+    post:
+      tags:
+      - "offers"
+      summary: Создать новое предложение
+      description: Добавляет новое предложение от пользователя и возвращает его в виде созданного объекта
+      requestBody:
+        description: Информация для добавления новго предложения по аренде
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+      responses:
+        "201":
+          description: "Предложение создано"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerById'
+
   /offers/{offerId}:
     get:
       tags:
-        - offers
+        - "offers"
       summary: Получить данные конкретного предложения
       description: Возвращает данные конкретного предложения по его id
 
@@ -50,8 +69,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
+    patch:
+      tags:
+        - "offers"
+      summary: Редактирование предложения
+      description: Редактирует конкретное предложение по его id
+      requestBody:
+        description: Объект с изменяемыми данными
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+      responses:
+        "201":
+          description: Предложение отредактировано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerById'
+        "404":
+          description: Редактируемое предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    delete:
+      tags:
+        - "offers"
+      summary: Удаление предложения
+      description: Удаляет конкретное предложение по его id
+      responses:
+        "204":
+          description: Предложение удалено
+        "404":
+          description: Удаляемое предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
 
-
+  /user/register:
+    post:
+      tags:
+      - "user"
+      summary: Создание нового пользователя
+      description: Создает нового пользователя
+      requestBody:
+        description: Информация необходимая для создания пользователя
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+      responses:
+        "201":
+          description: Новый пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "409":
+          description: Пользователь уже зарегистрирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conflictError'
 
 components:
   schemas:
@@ -291,6 +372,12 @@ components:
 
         user:
           type: object
+          example: {
+            name: 'Тимофей',
+            email: 'keijoissadedda-7159@yopmail.com',
+            avatarUrl: https://avatarko.ru/img/kartinka/27/igra_Lara_Croft_26762.jpg,
+            isPro: true
+          }
 
         coordinates:
           type: object
@@ -304,14 +391,56 @@ components:
     NotFoundError:
       type: object
       properties:
-        error:
-          type: string
-          example: 'Not Found'
         message:
           type: string
           example: 'Запрашиваемое предложение не найдено, проверьте id предложения и попробуйте еще раз'
 
+    createUser:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Тимофей
+          required:
+            - "true"
+        email:
+          type: string
+          example: timofeyinthebox@mail.net
+          required:
+            - "true"
+        password:
+          type: string
+          example: 12345admin
+          required:
+            - "true"
+        avatarUrl:
+          type: string
+          example: https://avatarko.ru/img/kartinka/27/igra_Lara_Croft_26762.jpg
+        isPro:
+          type: boolean
+          example: false
+          required:
+            - "true"
 
+    user:
+      properties:
+        name:
+          type: string
+          example: Тимофей
+        email:
+          type: string
+          example: timofeyinthebox@mail.net
+        avatarUrl:
+          type: string
+          example: https://avatarko.ru/img/kartinka/27/igra_Lara_Croft_26762.jpg
+        isPro:
+          type: boolean
+          example: false
 
+    conflictError:
+      properties:
+        message:
+          type: string
+          example: 'Нельзя выполнить так как уже существует'
 
 

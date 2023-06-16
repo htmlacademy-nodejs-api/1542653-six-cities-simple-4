@@ -5,6 +5,9 @@ export default class UserRDO {
   public name!: string;
 
   @Expose()
+  public email!: string;
+
+  @Expose()
   public avatarUrl!: string;
 
   @Expose()
