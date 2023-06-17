@@ -8,6 +8,8 @@ import { AppComponent } from '../types/app-components.enum.js';
 import { ConfigInterface } from '../core/config/config.interface';
 import { LoggerInterface } from '../core/logger/logger.interface';
 import { DataBaseClientInterface } from '../core/database-client/database-client.interface';
+import ExceptionFilters from '../core/exception-filters/exception-filters.js';
+import { ExceptionFiltersInterface } from '../core/exception-filters/exception-filters.interface.js';
 
 export const createRestApplicationContainer = (): Container => {
   const restAppContainer = new Container();
@@ -15,6 +17,7 @@ export const createRestApplicationContainer = (): Container => {
   restAppContainer.bind<ConfigInterface<RestSchema>>(AppComponent.ConfigInterface).to(ConfigService).inSingletonScope();
   restAppContainer.bind<LoggerInterface>(AppComponent.LoggerInterface).to(PinoService).inSingletonScope();
   restAppContainer.bind<DataBaseClientInterface>(AppComponent.DataBaseClientInterface).to(DataBaseClientService).inSingletonScope();
+  restAppContainer.bind<ExceptionFiltersInterface>(AppComponent.ExceptionFilters).to(ExceptionFilters).inSingletonScope();
 
   return restAppContainer;
 };
