@@ -57,12 +57,18 @@ export default class OfferService implements OfferServiceInterface {
         { id: { $toString: '$_id'},
           authorId: { $toString: '$authorId'},
           commentCount: { $size: '$comments'},
-          rating: {$round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+          rating: {
+            $cond: {
+              if: { $eq: [{$size: '$comments'}, 0] },
+              then: 0,
+              else: { $round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+            }
+          }
         },
       },
       {$limit: count},
       {$sort: {'createdAt': SortType.Down}},
-      {$unset: ['_id', '__v', 'comments', 'createdAt', 'updatedAt']}
+      {$unset: ['comments']}
     ]);
 
     return offers;
@@ -97,21 +103,23 @@ export default class OfferService implements OfferServiceInterface {
       { $addFields:
         { id: { $toString: '$_id'},
           commentCount: { $size: '$comments'},
-          rating: {$round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+          rating: {
+            $cond: {
+              if: { $eq: [{$size: '$comments'}, 0] },
+              then: 0,
+              else: { $round: [{$divide: [ {$sum: '$comments.rating'},{ $size: '$comments'}]}, 1]}
+            }
+          }
         },
       },
       {$unset: [
-        '_id',
-        '__v',
         'comments',
-        'authorId',
         'author._id',
         'author._password',
         'author.createdAt',
+        'author.email',
         'author.updatedAt',
         'author.__v',
-        'createdAt',
-        'updatedAt'
       ]}
     ]).exec();
 
