@@ -41,7 +41,7 @@ export default class OfferService implements OfferServiceInterface {
     return deletedOffer;
   };
 
-  public find = async (count = OfferSchemaLimits.DEFAULT_OFFER_REQUEST_LIMIT): Promise<DocumentType<OfferEntity>[]> => {
+  public find = async (limit = OfferSchemaLimits.DEFAULT_OFFER_REQUEST_LIMIT): Promise<DocumentType<OfferEntity>[]> => {
     const offers = await this.offerModel.aggregate([
       {
         $lookup: {
@@ -66,7 +66,7 @@ export default class OfferService implements OfferServiceInterface {
           }
         },
       },
-      {$limit: count},
+      {$limit: limit},
       {$sort: {'createdAt': SortType.Down}},
       {$unset: ['comments']}
     ]);

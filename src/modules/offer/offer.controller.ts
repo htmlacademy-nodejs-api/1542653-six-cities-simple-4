@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
+import * as core from 'express-serve-static-core';
 import Controller from '../../core/controller/controller.abstract.js';
 import OfferService from './offer.service.js';
 import { LoggerInterface } from '../../core/logger/logger.interface';
@@ -12,6 +13,12 @@ import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDTO from './dto/update-offer.dto.js';
 import HTTPError from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
+import { EntityQuery } from '../../types/query-params.type.js';
+import ValidateObjectIdMiddleware from '../../core/middlewares/validate-objectid.middleware.js';
+
+type RequestOfferParams = {
+  id: string;
+}
 
 @injectable()
 export default class OfferController extends Controller {
@@ -23,20 +30,58 @@ export default class OfferController extends Controller {
 
     this.logger.info('Regiser routers for offer controller...');
 
-    this.addRoute({path: '/', method: HttpMethods.Get, handler: this.index});
-    this.addRoute({path: '/:id', method: HttpMethods.Get, handler: this.exactOffer });
-    this.addRoute({path: '/', method: HttpMethods.Post, handler: this.createOffer });
-    this.addRoute({path: '/:id', method: HttpMethods.Patch, handler: this.updateOffer });
-    this.addRoute({path: '/:id', method: HttpMethods.Delete, handler: this.deleteOffer});
+    this.addRoute({
+      path: '/',
+      method: HttpMethods.Get,
+      handler: this.index
+    });
+    this.addRoute({
+      path: '/:id',
+      method: HttpMethods.Get,
+      handler: this.exactOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('id')
+      ]
+    });
+    this.addRoute({
+      path: '/',
+      method: HttpMethods.Post,
+      handler: this.createOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('id')
+      ]
+    });
+    this.addRoute({
+      path: '/:id',
+      method: HttpMethods.Patch,
+      handler: this.updateOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('id')
+      ]
+    });
+    this.addRoute({
+      path: '/:id',
+      method: HttpMethods.Delete,
+      handler: this.deleteOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('id')
+      ]
+    });
   }
 
-  public index = async (_req: Request, res: Response): Promise<void> => {
-    const offers = await this.offerService.find();
+  public index = async (
+    { query }: Request<core.ParamsDictionary, unknown, unknown, EntityQuery>,
+    res: Response
+  ): Promise<void> => {
+    const offers = await this.offerService.find(Number(query.limit));
     const offersResponse = fillDTO(OffersRDO, offers);
     this.ok(res, offersResponse);
   };
 
-  public exactOffer = async ({ params }: Request, res: Response): Promise<void> => {
+  public exactOffer = async (
+    { params }: Request<core.ParamsDictionary | RequestOfferParams>,
+    res: Response
+  ): Promise<void> => {
     const offer = await this.offerService.findByOfferId(params.id);
 
     if (!offer) {
@@ -59,7 +104,7 @@ export default class OfferController extends Controller {
   };
 
   public updateOffer = async (
-    { params, body }: Request<Record<string, string>, Record<string, unknown>, UpdateOfferDTO>,
+    { params, body }: Request<core.ParamsDictionary | RequestOfferParams, Record<string, unknown>, UpdateOfferDTO>,
     res: Response): Promise<void> => {
 
     const offer = this.offerService.findByOfferId(params.id);
@@ -76,7 +121,10 @@ export default class OfferController extends Controller {
     this.created(res, fillDTO(OfferRDO, updatedOffer));
   };
 
-  public deleteOffer = async ({ params }: Request<Record<string, string>>, res: Response): Promise<void> => {
+  public deleteOffer = async (
+    { params }: Request<core.ParamsDictionary | RequestOfferParams>,
+    res: Response
+  ): Promise<void> => {
     const offer = this.offerService.findByOfferId(params.id);
 
     if (!offer) {
@@ -87,8 +135,8 @@ export default class OfferController extends Controller {
       );
     }
 
-    const deletedOffer = await this.offerService.deleteOffer(params.id);
-    this.noContent(res, deletedOffer);
+    await this.offerService.deleteOffer(params.id);
+    this.noContent(res);
   };
 
 }
