@@ -15,6 +15,7 @@ import HTTPError from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { EntityQuery } from '../../types/query-params.type.js';
 import ValidateObjectIdMiddleware from '../../core/middlewares/validate-objectid.middleware.js';
+//import { OfferSchemaLimits } from './offer.constants.js';
 
 type RequestOfferParams = {
   id: string;
@@ -73,7 +74,7 @@ export default class OfferController extends Controller {
     { query }: Request<core.ParamsDictionary, unknown, unknown, EntityQuery>,
     res: Response
   ): Promise<void> => {
-    const offers = await this.offerService.find(Number(query.limit));
+    const offers = await this.offerService.find(query.limit);
     const offersResponse = fillDTO(OffersRDO, offers);
     this.ok(res, offersResponse);
   };

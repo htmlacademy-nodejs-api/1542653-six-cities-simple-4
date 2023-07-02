@@ -1,5 +1,5 @@
 import typegoose, { getModelForClass, defaultClasses, Ref } from '@typegoose/typegoose';
-import { OfferCoordinates } from '../../types/offer.type';
+import OfferCoordinates from '../../types/offer-coordinates.js';
 import { OfferSchemaLimits, CITIES, HOUSING_TYPES, FACILITIES } from './offer.constants.js';
 import { validateCityName, validatePhotosCount, validateRating, validateHousingType, validateFacilities } from './offer-schema-validators.js';
 import { UserEntity } from '../user/user.entity.js';

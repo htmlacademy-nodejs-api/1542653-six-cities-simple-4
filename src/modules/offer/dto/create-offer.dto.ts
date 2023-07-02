@@ -1,4 +1,5 @@
-import { OfferCoordinates } from '../../../types/offer.type';
+import OfferCoordinates from '../../../types/offer-coordinates.js';
+
 import {
   IsDateString,
   MinLength,
@@ -13,10 +14,16 @@ import {
   IsDecimal,
   Min,
   Max,
-  IsInt
+  IsInt,
+  IsIn,
+  IsMongoId,
+  IsObject,
+  IsNotEmpty,
+  ValidateNested
 } from 'class-validator';
-import { OfferSchemaLimits, CITIES, HOUSING_TYPES } from '../offer.constants.js';
+import { OfferSchemaLimits, CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
 import { offerValidateErrorMessage } from './offer-validate-error-message.js';
+import { Type } from 'class-transformer';
 
 export default class CreateOfferDto {
 
@@ -69,11 +76,19 @@ export default class CreateOfferDto {
   @Max(OfferSchemaLimits.MAX_OFFER_PRICE, {message: offerValidateErrorMessage.price.maxPriceMessage })
   public price!: number;
 
+  @IsArray({message: offerValidateErrorMessage.facilities.isNotArrayMessage })
+  @ArrayNotEmpty({ message: offerValidateErrorMessage.facilities.emptyArrayMessage })
+  @IsIn(FACILITIES, {message: offerValidateErrorMessage.facilities.incorrectFacilityMessage })
   public facilities!: string[];
 
+  @IsMongoId({message: offerValidateErrorMessage.authorId.message })
   public authorId!: string;
 
+  @IsNotEmpty()
   public commentCount!: number;
 
+  @IsObject()
+  @ValidateNested()
+  @Type(() => OfferCoordinates)
   public coordinates!: OfferCoordinates;
 }

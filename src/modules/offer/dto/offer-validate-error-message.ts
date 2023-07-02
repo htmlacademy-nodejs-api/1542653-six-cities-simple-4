@@ -1,4 +1,4 @@
-import { CITIES, HOUSING_TYPES, OfferSchemaLimits } from '../offer.constants.js';
+import { CITIES, FACILITIES, HOUSING_TYPES, OfferSchemaLimits } from '../offer.constants.js';
 
 export const offerValidateErrorMessage = {
   name: {
@@ -60,5 +60,15 @@ export const offerValidateErrorMessage = {
     intMessage: 'Offer price should be integer value',
     minPriceMessage: `Minimum offer price should be ${OfferSchemaLimits.MIN_OFFER_PRICE}`,
     maxPriceMessage: `Maximum offer price should be ${OfferSchemaLimits.MAX_OFFER_PRICE}`
+  },
+
+  facilities: {
+    isNotArrayMessage: 'Offer\'s facilities should be array',
+    emptyArrayMessage: 'Offer\'s facilities should not be empty',
+    incorrectFacilityMessage: `Offer's facilities can be only value in list: ${FACILITIES.join(', ')}`,
+  },
+
+  authorId: {
+    message: 'authorId field is not correct value'
   }
 };
