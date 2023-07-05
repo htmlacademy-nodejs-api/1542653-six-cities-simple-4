@@ -14,6 +14,8 @@ import CommentRdo from './rdo/comment.rdo.js';
 import { fillDTO } from '../../core/helpers/common.js';
 import { EntityQuery } from '../../types/query-params.type';
 import { CommentSchemaLimits } from './comment.contants.js';
+import ValidateDtoMiddleware from '../../core/middlewares/validate-dto.middleware.js';
+import ValidateObjectIdMiddleware from '../../core/middlewares/validate-objectid.middleware.js';
 
 type CommentParams = {
   offerId: string;
@@ -30,8 +32,24 @@ export default class CommentController extends Controller {
 
     this.logger.info('Register comment routes...');
 
-    this.addRoute({path: '/:offerId', method: HttpMethods.Get, handler: this.index});
-    this.addRoute({path: '/:offerId', method: HttpMethods.Post, handler: this.createComment });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethods.Get,
+      handler: this.index,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId')
+      ]
+    });
+
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethods.Post,
+      handler: this.createComment,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(CreateCommentDto)
+      ]
+    });
   }
 
   public index = async (

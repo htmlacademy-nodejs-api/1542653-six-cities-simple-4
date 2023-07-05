@@ -15,6 +15,8 @@ import HTTPError from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { EntityQuery } from '../../types/query-params.type.js';
 import ValidateObjectIdMiddleware from '../../core/middlewares/validate-objectid.middleware.js';
+import ValidateDtoMiddleware from '../../core/middlewares/validate-dto.middleware.js';
+import UpdateOfferDto from './dto/update-offer.dto.js';
 //import { OfferSchemaLimits } from './offer.constants.js';
 
 type RequestOfferParams = {
@@ -49,7 +51,8 @@ export default class OfferController extends Controller {
       method: HttpMethods.Post,
       handler: this.createOffer,
       middlewares: [
-        new ValidateObjectIdMiddleware('id')
+        new ValidateObjectIdMiddleware('id'),
+        new ValidateDtoMiddleware(CreateOfferDto)
       ]
     });
     this.addRoute({
@@ -57,7 +60,8 @@ export default class OfferController extends Controller {
       method: HttpMethods.Patch,
       handler: this.updateOffer,
       middlewares: [
-        new ValidateObjectIdMiddleware('id')
+        new ValidateObjectIdMiddleware('id'),
+        new ValidateDtoMiddleware(UpdateOfferDTO)
       ]
     });
     this.addRoute({
@@ -118,7 +122,7 @@ export default class OfferController extends Controller {
       );
     }
 
-    const updatedOffer = await this.offerService.updateOffer(params.id, body);
+    const updatedOffer = await this.offerService.updateOffer(params.id, fillDTO(UpdateOfferDto, body));
     this.created(res, fillDTO(OfferRDO, updatedOffer));
   };
 

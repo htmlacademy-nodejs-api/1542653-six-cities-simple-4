@@ -27,7 +27,8 @@ export const offerValidateErrorMessage = {
     notArrayMessage: 'Photos field should be array',
     emptyArrayMessage: 'Array of photos should not be empty',
     minArrayLengthMessage: `Length of photos array should be ${OfferSchemaLimits.REQUIRED_PHOTOS_COUNT}`,
-    maxArrayLengthMessage: `Length of photos array should be ${OfferSchemaLimits.REQUIRED_PHOTOS_COUNT}`
+    maxArrayLengthMessage: `Length of photos array should be ${OfferSchemaLimits.REQUIRED_PHOTOS_COUNT}`,
+    elementShouldBeUrl: 'The element of photos list should be url string type'
   },
 
   isPremium: {
@@ -35,9 +36,7 @@ export const offerValidateErrorMessage = {
   },
 
   rating: {
-    decimalMessage: 'Offer rating should be integer or decimal number with one sign after decimal',
-    minRatingMessage: `Minimum rating offer number should be ${OfferSchemaLimits.MIN_OFFER_RATING}`,
-    maxRatingMessage: `Maximum rating offer number should be ${OfferSchemaLimits.MAX_OFFER_RATING}`
+    message: 'rating field forbidden to create or update',
   },
 
   housingType: {
@@ -62,6 +61,10 @@ export const offerValidateErrorMessage = {
     maxPriceMessage: `Maximum offer price should be ${OfferSchemaLimits.MAX_OFFER_PRICE}`
   },
 
+  commentCount: {
+    message: 'commentCount field forbidden to create or update'
+  },
+
   facilities: {
     isNotArrayMessage: 'Offer\'s facilities should be array',
     emptyArrayMessage: 'Offer\'s facilities should not be empty',
@@ -69,6 +72,6 @@ export const offerValidateErrorMessage = {
   },
 
   authorId: {
-    message: 'authorId field is not correct value'
+    message: 'authorId field contain invalid value'
   }
 };
