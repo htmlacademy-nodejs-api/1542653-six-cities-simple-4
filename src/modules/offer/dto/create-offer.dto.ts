@@ -11,14 +11,12 @@ import {
   ArrayMinSize,
   ArrayMaxSize,
   IsBoolean,
-  IsDecimal,
   Min,
   Max,
   IsInt,
   IsIn,
   IsMongoId,
   IsObject,
-  IsNotEmpty,
   ValidateNested
 } from 'class-validator';
 import { OfferSchemaLimits, CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
@@ -53,10 +51,7 @@ export default class CreateOfferDto {
   @IsBoolean({ message: offerValidateErrorMessage.isPremium.message })
   public isPremium!: boolean;
 
-  @IsDecimal({ 'decimal_digits': '1'}, {message: offerValidateErrorMessage.rating.decimalMessage })
-  @Min(OfferSchemaLimits.MIN_OFFER_RATING, {message: offerValidateErrorMessage.rating.minRatingMessage })
-  @Max(OfferSchemaLimits.MAX_OFFER_RATING, {message: offerValidateErrorMessage.rating.maxRatingMessage })
-  public rating!: number;
+  public rating = 0;
 
   @IsEnum(HOUSING_TYPES, {message: offerValidateErrorMessage.housingType.message })
   public housingType!: string;
@@ -84,8 +79,7 @@ export default class CreateOfferDto {
   @IsMongoId({message: offerValidateErrorMessage.authorId.message })
   public authorId!: string;
 
-  @IsNotEmpty()
-  public commentCount!: number;
+  public commentCount = 0;
 
   @IsObject()
   @ValidateNested()

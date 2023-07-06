@@ -9,7 +9,6 @@ import {
   ArrayMinSize,
   ArrayMaxSize,
   IsBoolean,
-  //IsDecimal,
   Min,
   Max,
   IsInt,
@@ -64,8 +63,6 @@ export default class UpdateOfferDto {
 
   @IsOptional()
   @IsEmpty({message: offerValidateErrorMessage.rating.message})
-  @IsNotEmpty({message: offerValidateErrorMessage.rating.message})
-  @Exclude()
   public rating?: number;
 
   @IsOptional()

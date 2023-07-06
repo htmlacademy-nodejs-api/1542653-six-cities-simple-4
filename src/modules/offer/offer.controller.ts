@@ -16,8 +16,6 @@ import { StatusCodes } from 'http-status-codes';
 import { EntityQuery } from '../../types/query-params.type.js';
 import ValidateObjectIdMiddleware from '../../core/middlewares/validate-objectid.middleware.js';
 import ValidateDtoMiddleware from '../../core/middlewares/validate-dto.middleware.js';
-import UpdateOfferDto from './dto/update-offer.dto.js';
-//import { OfferSchemaLimits } from './offer.constants.js';
 
 type RequestOfferParams = {
   id: string;
@@ -112,7 +110,7 @@ export default class OfferController extends Controller {
     { params, body }: Request<core.ParamsDictionary | RequestOfferParams, Record<string, unknown>, UpdateOfferDTO>,
     res: Response): Promise<void> => {
 
-    const offer = this.offerService.findByOfferId(params.id);
+    const offer = await this.offerService.findByOfferId(params.id);
 
     if (!offer) {
       throw new HTTPError(
@@ -122,7 +120,7 @@ export default class OfferController extends Controller {
       );
     }
 
-    const updatedOffer = await this.offerService.updateOffer(params.id, fillDTO(UpdateOfferDto, body));
+    const updatedOffer = await this.offerService.updateOffer(params.id, {...body, rating: offer.rating, commentCount: offer.commentCount});
     this.created(res, fillDTO(OfferRDO, updatedOffer));
   };
 
