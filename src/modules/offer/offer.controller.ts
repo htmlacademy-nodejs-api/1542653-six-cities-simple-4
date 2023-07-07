@@ -121,6 +121,7 @@ export default class OfferController extends Controller {
     }
 
     const updatedOffer = await this.offerService.updateOffer(params.id, {...body, rating: offer.rating, commentCount: offer.commentCount});
+    console.log(updatedOffer);
     this.created(res, fillDTO(OfferRDO, updatedOffer));
   };
 

@@ -13,17 +13,17 @@ import {
   Max,
   IsInt,
   IsIn,
-  IsNotEmpty,
   IsObject,
   ValidateNested,
   IsOptional,
-  IsEmpty
+  IsEmpty,
+  IsNotEmpty
 } from 'class-validator';
 import OfferCoordinates from '../../../types/offer-coordinates.js';
 import { OfferSchemaLimits } from '../offer.constants.js';
 import { offerValidateErrorMessage } from './offer-validate-error-message.js';
 import { CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
-import { Exclude, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export default class UpdateOfferDto {
 
@@ -90,16 +90,15 @@ export default class UpdateOfferDto {
   @IsOptional()
   @IsArray({message: offerValidateErrorMessage.facilities.isNotArrayMessage })
   @ArrayNotEmpty({ message: offerValidateErrorMessage.facilities.emptyArrayMessage })
-  @IsIn(FACILITIES, {message: offerValidateErrorMessage.facilities.incorrectFacilityMessage })
+  @IsIn(FACILITIES, {message: offerValidateErrorMessage.facilities.incorrectFacilityMessage, each: true })
   public facilities?: string[];
 
   @IsOptional()
   @IsEmpty({message: offerValidateErrorMessage.commentCount.message})
-  @IsNotEmpty({message: offerValidateErrorMessage.commentCount.message})
-  @Exclude()
   public commentCount?: number;
 
   @IsOptional()
+  @IsNotEmpty({message: 'Fields is empty' , each: true })
   @IsObject()
   @ValidateNested()
   @Type(() => OfferCoordinates)
