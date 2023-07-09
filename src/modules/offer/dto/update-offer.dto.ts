@@ -17,9 +17,9 @@ import {
   ValidateNested,
   IsOptional,
   IsEmpty,
-  IsNotEmpty
+  IsNotEmptyObject
 } from 'class-validator';
-import OfferCoordinates from '../../../types/offer-coordinates.js';
+import { OfferCoordinates } from '../../../types/offer-coordinates.js';
 import { OfferSchemaLimits } from '../offer.constants.js';
 import { offerValidateErrorMessage } from './offer-validate-error-message.js';
 import { CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
@@ -98,7 +98,7 @@ export default class UpdateOfferDto {
   public commentCount?: number;
 
   @IsOptional()
-  @IsNotEmpty({message: 'Fields is empty' , each: true })
+  @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
   @Type(() => OfferCoordinates)

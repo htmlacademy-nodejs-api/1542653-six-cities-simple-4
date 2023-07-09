@@ -1,5 +1,5 @@
 import { User } from './user.type';
-import OfferCoordinates from './offer-coordinates.js';
+import { OfferCoordinates } from './offer-coordinates.js';
 
 // export type OfferCoordinates = {
 //   longtitude: string;

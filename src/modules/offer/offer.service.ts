@@ -29,8 +29,9 @@ export default class OfferService implements OfferServiceInterface {
   public updateOffer = async (
     offerId: string,
     dto: UpdateOfferDto
-  ): Promise<DocumentType<OfferEntity> | null> => {
-    const updatedOffer = await this.offerModel.findByIdAndUpdate(offerId, dto, {new: true}).populate('authorId').exec();
+  ): Promise<Offer | null> => {
+    await this.offerModel.findByIdAndUpdate(offerId, dto).exec();
+    const updatedOffer = await this.findByOfferId(offerId);
     this.logger.info(`Offer with id: ${offerId} has been updated`);
     return updatedOffer;
   };

@@ -1,4 +1,4 @@
-import OfferCoordinates from '../../../types/offer-coordinates.js';
+import { OfferCoordinates } from '../../../types/offer-coordinates.js';
 
 import {
   IsDateString,
@@ -17,7 +17,9 @@ import {
   IsIn,
   IsMongoId,
   IsObject,
-  ValidateNested
+  IsNotEmptyObject,
+  ValidateNested,
+  IsEmpty
 } from 'class-validator';
 import { OfferSchemaLimits, CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
 import { offerValidateErrorMessage } from './offer-validate-error-message.js';
@@ -46,11 +48,13 @@ export default class CreateOfferDto {
   @ArrayNotEmpty({message: offerValidateErrorMessage.photos.emptyArrayMessage })
   @ArrayMinSize(OfferSchemaLimits.REQUIRED_PHOTOS_COUNT, {message: offerValidateErrorMessage.photos.minArrayLengthMessage })
   @ArrayMaxSize(OfferSchemaLimits.REQUIRED_PHOTOS_COUNT, {message: offerValidateErrorMessage.photos.maxArrayLengthMessage })
+  @IsUrl({}, {message: offerValidateErrorMessage.photos.elementShouldBeUrl, each: true })
   public photos!: string[];
 
   @IsBoolean({ message: offerValidateErrorMessage.isPremium.message })
   public isPremium!: boolean;
 
+  @IsEmpty({message: offerValidateErrorMessage.rating.message})
   public rating = 0;
 
   @IsEnum(HOUSING_TYPES, {message: offerValidateErrorMessage.housingType.message })
@@ -73,14 +77,16 @@ export default class CreateOfferDto {
 
   @IsArray({message: offerValidateErrorMessage.facilities.isNotArrayMessage })
   @ArrayNotEmpty({ message: offerValidateErrorMessage.facilities.emptyArrayMessage })
-  @IsIn(FACILITIES, {message: offerValidateErrorMessage.facilities.incorrectFacilityMessage })
+  @IsIn(FACILITIES, {message: offerValidateErrorMessage.facilities.incorrectFacilityMessage, each: true })
   public facilities!: string[];
 
   @IsMongoId({message: offerValidateErrorMessage.authorId.message })
   public authorId!: string;
 
+  @IsEmpty({message: offerValidateErrorMessage.commentCount.message})
   public commentCount = 0;
 
+  @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
   @Type(() => OfferCoordinates)
