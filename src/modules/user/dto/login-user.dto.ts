@@ -11,7 +11,7 @@ export default class LoginUserDTO {
   public email!: string;
 
   @MinLength(UserSchemaLimits.MIN_PASSWORD_LENGTH, { message: userValidateErrorMessage.password.minLengthMessage })
-  @MaxLength(UserSchemaLimits.MIN_PASSWORD_LENGTH, { message: userValidateErrorMessage.password.maxLengthMessage })
+  @MaxLength(UserSchemaLimits.MAX_PASSWORD_LENGTH, { message: userValidateErrorMessage.password.maxLengthMessage })
   public password!: string;
 
 }

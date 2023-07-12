@@ -1,4 +1,12 @@
-import { MinLength, MaxLength, Max, Min, IsDecimal, IsMongoId } from 'class-validator';
+import {
+  MinLength,
+  MaxLength,
+  Max,
+  Min,
+  IsMongoId,
+  IsNumber,
+  IsOptional
+} from 'class-validator';
 import { CommentSchemaLimits } from '../comment.contants.js';
 import { commentValidateErrorMessage } from './comment-validate-error-message.js';
 
@@ -9,12 +17,12 @@ export default class CreateCommentDto {
 
   @Min(CommentSchemaLimits.MIN_COMMENT_RATING, { message: commentValidateErrorMessage.rating.minRatingMessage })
   @Max(CommentSchemaLimits.MAX_COMMENT_RATING, { message: commentValidateErrorMessage.rating.maxRatingMessage })
-  @IsDecimal({ 'decimal_digits': '1'}, { message: commentValidateErrorMessage.rating.decimalMessage })
+  @IsNumber({maxDecimalPlaces: 1}, {message: commentValidateErrorMessage.rating.decimalMessage})
   public rating!: number;
 
-  @IsMongoId({})
+  @IsMongoId({message: commentValidateErrorMessage.authorId.message })
   public authorId!: string;
 
-  @IsMongoId({})
+  @IsOptional()
   public offerId!: string;
 }

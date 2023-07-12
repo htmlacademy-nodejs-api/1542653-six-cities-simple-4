@@ -36,6 +36,7 @@ export default class OfferController extends Controller {
       method: HttpMethods.Get,
       handler: this.index
     });
+
     this.addRoute({
       path: '/:id',
       method: HttpMethods.Get,
@@ -44,15 +45,16 @@ export default class OfferController extends Controller {
         new ValidateObjectIdMiddleware('id')
       ]
     });
+
     this.addRoute({
       path: '/',
       method: HttpMethods.Post,
       handler: this.createOffer,
       middlewares: [
-        new ValidateObjectIdMiddleware('id'),
         new ValidateDtoMiddleware(CreateOfferDto)
       ]
     });
+
     this.addRoute({
       path: '/:id',
       method: HttpMethods.Patch,
@@ -102,7 +104,7 @@ export default class OfferController extends Controller {
   public createOffer = async (
     { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
     res: Response): Promise<void> => {
-    const createdOffer = await this.offerService.create(body);
+    const createdOffer = await this.offerService.create({...body, rating: 1, commentCount: 0});
     this.created(res, fillDTO(OffersRDO, createdOffer));
   };
 
@@ -121,7 +123,6 @@ export default class OfferController extends Controller {
     }
 
     const updatedOffer = await this.offerService.updateOffer(params.id, {...body, rating: offer.rating, commentCount: offer.commentCount});
-    console.log(updatedOffer);
     this.created(res, fillDTO(OfferRDO, updatedOffer));
   };
 

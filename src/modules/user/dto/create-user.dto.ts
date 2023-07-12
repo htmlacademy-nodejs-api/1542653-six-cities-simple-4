@@ -3,7 +3,8 @@ import {
   MaxLength,
   IsEmail,
   IsBoolean,
-  IsUrl
+  IsUrl,
+  IsOptional
 } from 'class-validator';
 import { UserSchemaLimits } from '../user.constants.js';
 import { userValidateErrorMessage } from './user-validate-error-message.js';
@@ -21,6 +22,7 @@ export default class CreateUserDTO {
   @MaxLength(UserSchemaLimits.MAX_PASSWORD_LENGTH, {message: userValidateErrorMessage.password.maxLengthMessage })
   public password!: string;
 
+  @IsOptional()
   @IsUrl({}, {message: userValidateErrorMessage.avatar.message })
   public avatarUrl?: string;
 

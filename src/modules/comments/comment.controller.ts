@@ -80,8 +80,6 @@ export default class CommentController extends Controller {
   ): Promise<void> => {
     const offer = await this.offerService.findByOfferId(params.offerId);
 
-    // TODO: Нужна валидация данных
-
     if (!offer) {
       throw new HTTPError(
         StatusCodes.NOT_FOUND,

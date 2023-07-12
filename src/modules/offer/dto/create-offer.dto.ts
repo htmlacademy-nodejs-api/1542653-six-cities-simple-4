@@ -19,7 +19,6 @@ import {
   IsObject,
   IsNotEmptyObject,
   ValidateNested,
-  IsEmpty
 } from 'class-validator';
 import { OfferSchemaLimits, CITIES, HOUSING_TYPES, FACILITIES } from '../offer.constants.js';
 import { offerValidateErrorMessage } from './offer-validate-error-message.js';
@@ -54,8 +53,7 @@ export default class CreateOfferDto {
   @IsBoolean({ message: offerValidateErrorMessage.isPremium.message })
   public isPremium!: boolean;
 
-  @IsEmpty({message: offerValidateErrorMessage.rating.message})
-  public rating = 0;
+  public rating!: number;
 
   @IsEnum(HOUSING_TYPES, {message: offerValidateErrorMessage.housingType.message })
   public housingType!: string;
@@ -83,8 +81,7 @@ export default class CreateOfferDto {
   @IsMongoId({message: offerValidateErrorMessage.authorId.message })
   public authorId!: string;
 
-  @IsEmpty({message: offerValidateErrorMessage.commentCount.message})
-  public commentCount = 0;
+  public commentCount!: number;
 
   @IsNotEmptyObject()
   @IsObject()
